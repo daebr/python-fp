@@ -1,11 +1,19 @@
 from fp.foldable import Foldable
 from fp.functor import Functor
 
+
 class LinkedList(Functor, Foldable):
-    def length(self):
-        pass
+    """A linked list is a recursive type. A linked list `[a]` contains a head
+    of `a` and a tail of `[a]`. An empty linked list is Nil.
+
+    This type adheres structural equality.
+    """
+    pass
+
 
 class Nil(LinkedList):
+    """An empty linked list"""
+
     def __init__(self):
         ()
 
@@ -36,11 +44,16 @@ class Cons(LinkedList):
         return f(self.head, self.tail.fold(f, z))
 
 
+# An empty linked list
 nil = Nil()
+
+# (a, LinkedList<a>) -> LinkedList<a>
 cons = Cons
 
-def toLinkedList(l):
-    if len(l) == 0:
+
+def toLinkedList(list):
+    """[a] -> LinkedList<a>"""
+    if len(list) == 0:
         return nil
     else:
-        return cons(l[0], toLinkedList(l[1:]))
+        return cons(list[0], toLinkedList(list[1:]))

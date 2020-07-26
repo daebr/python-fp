@@ -2,6 +2,7 @@ import context
 from fp.monad import Monad
 from fp.traversable import Traversable
 
+
 class ExactlyOne(Monad, Traversable):
     def __init__(self, a):
         self.value = a
