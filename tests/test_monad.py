@@ -6,7 +6,7 @@ class TestMonad(unittest.TestCase):
 
     def test_left_identity_law(self):
         pure = ExactlyOne
-        def add1M(x): pure(x + 1)
+        def add1M(x): return pure(x + 1)
         self.assertEqual(
             pure(1).bind(add1M),
             add1M(1)
