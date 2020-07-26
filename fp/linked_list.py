@@ -1,14 +1,20 @@
-from fp.foldable import Foldable
-from fp.functor import Functor
+from fp.core import curry
+from fp.monad import Monad
+from fp.traversable import Traversable
 
 
-class LinkedList(Functor, Foldable):
+class LinkedList(Monad, Traversable):
     """A linked list is a recursive type. A linked list `[a]` contains a head
     of `a` and a tail of `[a]`. An empty linked list is Nil.
 
-    This type adheres structural equality.
+    This type adheres to structural equality.
     """
-    pass
+
+    def isEmpty(self):
+        pass
+
+    def concat(self, other):
+        pass
 
 
 class Nil(LinkedList):
@@ -20,11 +26,29 @@ class Nil(LinkedList):
     def __eq__(self, other):
         return isinstance(other, Nil)
 
+    def __str__(self):
+        return "Nil"
+
     def map(self, f):
+        return Nil()
+
+    def ap(self, a):
+        return Nil()
+
+    def bind(self, f):
         return Nil()
 
     def fold(self, f, z):
         return z
+
+    def sequence(self, pure):
+        return pure(Nil())
+
+    def isEmpty(self):
+        return True
+
+    def concat(self, other):
+        return other
 
 
 class Cons(LinkedList):
@@ -37,11 +61,42 @@ class Cons(LinkedList):
             return self.head == other.head and self.tail == other.tail
         return False
 
+    def __str__(self):
+        def foldStr(a, b):
+            if b == "":
+                return str(a)
+            else:
+                return str(a) + ", " + b
+        return "LinkedList [" + self.fold(foldStr, "") + "]"
+
     def map(self, f):
         return Cons(f(self.head), self.tail.map(f))
 
+    def ap(self, a):
+        if isinstance(a, Nil):
+            return Nil()
+        else:
+            return Cons(
+                self.head(a.head),
+                a.tail.map(self.head).concat(self.tail.ap(a))
+            )
+
+    def bind(self, f):
+        print(str(self) + " >>= f")
+        return f(self.head).concat(self.tail.bind(f))
+
     def fold(self, f, z):
         return f(self.head, self.tail.fold(f, z))
+
+    def sequence(self, pure):
+        cons = curry(Cons)
+        return pure(cons).ap(self.head).ap(self.tail.sequence(pure))
+
+    def isEmpty(self):
+        return False
+
+    def concat(self, other):
+        return Cons(self.head, self.tail.concat(other))
 
 
 # An empty linked list

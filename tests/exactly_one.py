@@ -23,9 +23,12 @@ class ExactlyOne(Monad, Traversable):
         return f(self.value, z)
 
     def sequence(self, p):
-        p(self.pure).ap(self.value)
+        return p(self.pure).ap(self.value)
 
     def __eq__(self, other):
         if isinstance(other, ExactlyOne):
             return self.value == other.value
         return False
+
+    def __str__(self):
+        return "ExactlyOne(" + str(self.value) + ")"

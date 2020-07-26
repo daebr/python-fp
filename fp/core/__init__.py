@@ -25,37 +25,58 @@ class Infix(object):
 
 
 def identity(a):
-    """a -> a"""
+    """The identity function. A function that returns its parameter.
+
+    a -> a
+    """
     return a
 
 
 def const(a):
-    """a -> b -> a"""
+    """The constant function. A function that returns a constant value.
+
+    a -> b -> a
+    """
     return lambda b: a
 
 
 def curry(f):
-    """((a, b) -> c) -> a -> b -> c"""
+    """Convert a two-parameter function into two one-parameter functions.
+
+    ((a, b) -> c) -> a -> b -> c
+    """
     return lambda a: lambda b: f(a, b)
 
 
 @Infix
 def andThen(f, g):
-    """(a -> b, b -> c) -> a -> c"""
+    """Left to right function composition.
+
+    (a -> b, b -> c) -> a -> c
+    """
     return lambda a: g(f(a))
 
 
 @Infix
 def compose(f, g):
-    """(b -> c, a -> b) -> a -> c"""
+    """Right to left function composition.
+
+    (b -> c, a -> b) -> a -> c
+    """
     return lambda a: f(g(a))
 
 
 def composeLeft(f, g):
-    """(a -> b, b -> c) -> a -> c"""
+    """Left to right function composition.
+
+    (a -> b, b -> c) -> a -> c
+    """
     return lambda a: g(f(a))
 
 
 def composeRight(f, g):
-    """(b -> c, a -> b) -> a -> c"""
+    """Right to left function composition.
+
+    (b -> c, a -> b) -> a -> c
+    """
     return lambda a: f(g(a))

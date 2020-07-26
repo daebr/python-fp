@@ -9,8 +9,8 @@ class ApplicativeTest(unittest.TestCase):
     def test_identity_law(self):
         pure = ExactlyOne
         self.assertEqual(
-            pure(identity).ap(ExactlyOne(1)),
-            ExactlyOne(1)
+            pure(identity).ap(pure(1)),
+            pure(1)
         )
 
     def test_homomorphism_law(self):
@@ -34,8 +34,9 @@ class ApplicativeTest(unittest.TestCase):
         pure = ExactlyOne
         def add1(x): return x + 1
         def double(x): return x * 2
+        f = curry(composeRight)
         self.assertEqual(
-            pure(curry(composeRight)).ap(pure(add1)).ap(pure(double)).ap(pure(1)),
+            pure(f).ap(pure(add1)).ap(pure(double)).ap(pure(1)),
             pure(add1).ap(pure(double).ap(pure(1)))
         )
 
