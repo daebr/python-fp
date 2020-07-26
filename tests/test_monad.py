@@ -1,12 +1,12 @@
 import unittest
-import context
 from exactly_one import ExactlyOne
+
 
 class TestMonad(unittest.TestCase):
 
     def test_left_identity_law(self):
         pure = ExactlyOne
-        add1M = lambda x : pure(x + 1)
+        def add1M(x): pure(x + 1)
         self.assertEqual(
             pure(1).bind(add1M),
             add1M(1)
@@ -21,12 +21,13 @@ class TestMonad(unittest.TestCase):
 
     def test_associativity_law(self):
         pure = ExactlyOne
-        add1M = lambda x : pure(x + 1)
-        doubleM = lambda x : pure(x * 2)
+        def add1M(x): return pure(x + 1)
+        def doubleM(x): return pure(x * 2)
         self.assertEqual(
             pure(1).bind(add1M).bind(doubleM),
-            pure(1).bind(lambda x : add1M(x).bind(doubleM))
+            pure(1).bind(lambda x: add1M(x).bind(doubleM))
         )
+
 
 if __name__ == '__main__':
     unittest.main()

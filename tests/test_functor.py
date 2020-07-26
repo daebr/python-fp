@@ -1,7 +1,7 @@
 import unittest
-import context
-from fp.core import *
+from fp.core import identity, andThen
 from exactly_one import ExactlyOne
+
 
 class TestFunctor(unittest.TestCase):
 
@@ -14,8 +14,8 @@ class TestFunctor(unittest.TestCase):
 
     def test_associativity_law(self):
         a = ExactlyOne(1)
-        f = lambda x : x + 1
-        g = lambda x : x * 2
+        def f(x): return x + 1
+        def g(x): return x * 2
         self.assertEqual(
             a.map(f).map(g),
             a.map(f |andThen| g)
@@ -26,6 +26,7 @@ class TestFunctor(unittest.TestCase):
 
     def test_void(self):
         assert ExactlyOne(1).void() == ExactlyOne(())
+
 
 if __name__ == '__main__':
     unittest.main()
