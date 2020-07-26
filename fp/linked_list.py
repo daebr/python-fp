@@ -82,7 +82,6 @@ class Cons(LinkedList):
             )
 
     def bind(self, f):
-        print(str(self) + " >>= f")
         return f(self.head).concat(self.tail.bind(f))
 
     def fold(self, f, z):
