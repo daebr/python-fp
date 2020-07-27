@@ -1,14 +1,14 @@
 import unittest
 import context
 from fp.core import identity, curry, andThen, composeRight
-from fp.linked_list import cons, nil, toLinkedList
+from fp.linked_list import Nil, cons, nil, toLinkedList
 from exactly_one import ExactlyOne
 
 
 class TestLinkedList(unittest.TestCase):
 
     def test_eq_nil(self):
-        self.assertEqual(nil, nil)
+        self.assertEqual(Nil(), Nil())
 
     def test_eq_cons(self):
         self.assertEqual(
