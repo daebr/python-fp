@@ -10,7 +10,8 @@ class LinkedList(Monad, Traversable):
     This type adheres to structural equality.
     """
 
-    def pure(self, a):
+    @staticmethod
+    def pure(a):
         return Cons(a, Nil())
 
     def isEmpty(self):

@@ -4,10 +4,6 @@ from fp.functor import Functor
 
 class Applicative(Functor):
 
-    def pure(self, a):
-        """(f b, a) -> f a"""
-        pass
-
     def ap(self, a):
         """(f (a -> b), f a) -> f b"""
         pass
