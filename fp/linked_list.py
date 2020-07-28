@@ -4,7 +4,8 @@ from fp.traversable import Traversable
 
 
 class LinkedList(Monad, Traversable):
-    """A linked list is a recursive type. A linked list `[a]` contains a head
+    """
+    A linked list is a recursive type. A linked list `[a]` contains a head
     of `a` and a tail of `[a]`. An empty linked list is Nil.
 
     This type adheres to structural equality.
