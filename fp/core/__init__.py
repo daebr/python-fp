@@ -2,7 +2,8 @@ from functools import partial
 
 
 class Infix(object):
-    """Use this class to define infix operators.
+    """
+    Use this class to define infix operators.
 
     Example:
     isa = Infix(lambda x,y: x.__class__ == y.__class__)
@@ -25,7 +26,8 @@ class Infix(object):
 
 
 def identity(a):
-    """The identity function. A function that returns its parameter.
+    """
+    The identity function. A function that returns its parameter.
 
     a -> a
     """
@@ -33,7 +35,8 @@ def identity(a):
 
 
 def const(a):
-    """The constant function. A function that returns a constant value.
+    """
+    The constant function. A function that returns a constant value.
 
     a -> b -> a
     """
@@ -41,7 +44,10 @@ def const(a):
 
 
 def curry(f):
-    """Convert a two-parameter function into two one-parameter functions.
+    """
+    Convert a two-parameter function into two one-parameter functions. Curried
+    functions will allow the partial application of arguments to form new
+    functions.
 
     ((a, b) -> c) -> a -> b -> c
     """
@@ -50,7 +56,8 @@ def curry(f):
 
 @Infix
 def andThen(f, g):
-    """Left to right function composition.
+    """
+    Left to right function composition.
 
     (a -> b, b -> c) -> a -> c
     """
@@ -59,7 +66,8 @@ def andThen(f, g):
 
 @Infix
 def compose(f, g):
-    """Right to left function composition.
+    """
+    Right to left function composition.
 
     (b -> c, a -> b) -> a -> c
     """
@@ -67,7 +75,8 @@ def compose(f, g):
 
 
 def composeLeft(f, g):
-    """Left to right function composition.
+    """
+    Left to right function composition.
 
     (a -> b, b -> c) -> a -> c
     """
@@ -75,7 +84,8 @@ def composeLeft(f, g):
 
 
 def composeRight(f, g):
-    """Right to left function composition.
+    """
+    Right to left function composition.
 
     (b -> c, a -> b) -> a -> c
     """
