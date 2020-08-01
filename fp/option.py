@@ -1,8 +1,9 @@
+from fp.linked_list import Cons, Nil, curry
 from fp.monad import Monad
-from fp.traversable import Traversable
+from fp.foldable import Foldable
 
 
-class Option(Monad, Traversable):
+class Option(Monad, Foldable):
     """A type that represents some value (Some) or no value (Nothing).
 
     This type adheres to structural equality.
@@ -12,6 +13,30 @@ class Option(Monad, Traversable):
     @staticmethod
     def pure(a):
         return Some(a)
+
+    @staticmethod
+    def sequence(xs):
+        """
+        Traverse a list of options to convert it into an option of list.
+
+        [Option a] -> Option [a]
+        """
+        if isinstance(xs, Nil):
+            return Option.pure(Nil())
+        else:
+            return Option.pure(curry(Cons)) \
+                .ap(xs.head) \
+                .ap(Option.sequence(xs.tail))
+
+    @staticmethod
+    def traverse(f, xs):
+        """
+        Apply a function from an `a` to an `Option a` over a linked list, then
+        invert the result.
+
+        ((a -> Option b), [a]) -> Option [b]
+        """
+        return Option.sequence(xs.map(f))
 
     def isNone(self): pass
 
@@ -47,9 +72,6 @@ class Nothing(Option):
     def fold(self, f, z):
         return z
 
-    def sequence(self, pure):
-        return pure(Nothing())
-
 
 class Some(Option):
     def __init__(self, a):
@@ -84,9 +106,6 @@ class Some(Option):
 
     def fold(self, f, z):
         return f(self.value, z)
-
-    def sequence(self, pure):
-        return self.value.map(some)
 
 
 """a -> Option a"""
