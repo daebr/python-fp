@@ -1,9 +1,9 @@
 import context
 from fp.monad import Monad
-from fp.traversable import Traversable
+from fp.foldable import Foldable
 
 
-class ExactlyOne(Monad, Traversable):
+class ExactlyOne(Monad, Foldable):
     def __init__(self, a):
         self.value = a
 
@@ -21,9 +21,6 @@ class ExactlyOne(Monad, Traversable):
 
     def fold(self, f, z):
         return f(self.value, z)
-
-    def sequence(self, p):
-        return p(self.pure).ap(self.value)
 
     def __eq__(self, other):
         if isinstance(other, ExactlyOne):

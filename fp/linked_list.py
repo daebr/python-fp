@@ -1,9 +1,9 @@
 from fp.core import curry
+from fp.foldable import Foldable
 from fp.monad import Monad
-from fp.traversable import Traversable
 
 
-class LinkedList(Monad, Traversable):
+class LinkedList(Monad, Foldable):
     """
     A linked list is a recursive type. A linked list `[a]` contains a head
     of `a` and a tail of `[a]`. An empty linked list is Nil.
@@ -45,9 +45,6 @@ class Nil(LinkedList):
 
     def fold(self, f, z):
         return z
-
-    def sequence(self, pure):
-        return pure(Nil())
 
     def isEmpty(self):
         return True
@@ -91,10 +88,6 @@ class Cons(LinkedList):
 
     def fold(self, f, z):
         return f(self.head, self.tail.fold(f, z))
-
-    def sequence(self, pure):
-        cons = curry(Cons)
-        return pure(cons).ap(self.head).ap(self.tail.sequence(pure))
 
     def isEmpty(self):
         return False

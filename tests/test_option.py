@@ -1,7 +1,7 @@
 import unittest
 import context
 from fp.core import identity, curry, andThen, composeRight
-from fp.option import Nothing, some, nothing
+from fp.option import Option, Nothing, some, nothing
 from fp.linked_list import LinkedList
 from fp.linked_list import toLinkedList
 
@@ -146,17 +146,36 @@ class TestOption(unittest.TestCase):
         )
 
     def test_sequence_some(self):
-        option = some(toLinkedList([1, 2, 3]))
         xs = toLinkedList([some(1), some(2), some(3)])
-        self.assertEqual(option.sequence(LinkedList.pure), xs)
-        self.assertEqual(xs.sequence(some), option)
+        self.assertEqual(
+            Option.sequence(xs),
+            some(toLinkedList([1, 2, 3]))
+        )
 
     def test_sequence_nothing(self):
         self.assertEqual(
-            nothing.sequence(LinkedList.pure),
-            toLinkedList([nothing])
+            Option.sequence(toLinkedList([some(1), nothing, some(3)])),
+            nothing
         )
+
+    def test_traverse_some(self):
+        xs = toLinkedList([1, 2, 3])
+        def add1A(x): return some(x + 1)
         self.assertEqual(
-            toLinkedList([some(1), nothing, some(3)]).sequence(some),
+            Option.traverse(add1A, xs),
+            some(toLinkedList([2, 3, 4]))
+        )
+
+    def test_traverse_nothing(self):
+        xs = toLinkedList([1, 2, 3])
+
+        def oddA(x):
+            if x % 2 == 1:
+                return some(x)
+            else:
+                return nothing
+                
+        self.assertEqual(
+            Option.traverse(oddA, xs),
             nothing
         )

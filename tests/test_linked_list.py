@@ -123,13 +123,6 @@ class TestLinkedList(unittest.TestCase):
             6
         )
 
-    def test_sequence(self):
-        xs = toLinkedList([ExactlyOne(1), ExactlyOne(2), ExactlyOne(3)])
-        self.assertEqual(
-            xs.sequence(ExactlyOne),
-            ExactlyOne(toLinkedList([1, 2, 3]))
-        )
-
 
 if __name__ == '__main__':
     unittest.main()
